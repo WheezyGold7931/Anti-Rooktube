@@ -1,0 +1,10 @@
+main: me.wheezygold.antiRooktube.Main
+name: Anti-Rooktube
+version: 1.0.0
+author: WheezyGold7931
+description: Everyone needs less Rooktube
+softdepend: [Skript]
+commands:
+  anti-rooktube:
+    description: Main command for Anti-Rooktube
+    usage: /anti-rooktube

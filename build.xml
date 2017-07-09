@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="Anti-Rooktube" default="makejar" basedir=".">
+    <target name="makejar" description="Builds the Plugin">
+        <mkdir dir="target"></mkdir>
+        <jar destfile="target/${ant.project.name}.jar">
+            <fileset dir="bin"></fileset>
+            <fileset file="plugin.yml"></fileset>
+        </jar>
+    </target>
+</project>
