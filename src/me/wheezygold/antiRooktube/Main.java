@@ -1,6 +1,7 @@
 package me.wheezygold.antiRooktube;
 
 import java.io.IOException;
+import java.util.Arrays;
 
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -130,7 +131,8 @@ public class Main extends JavaPlugin implements Listener {
 	 @EventHandler
 	 public void playerChat(AsyncPlayerChatEvent  e) {
 		 if (getConfig().getBoolean("toggles.chatfilter") != false) {
-			 if (e.getMessage().contains("rooktube") || e.getMessage().contains("rookcraft") || (e.getMessage().contains("rooktdm") || e.getMessage().contains("RookPvPz") || e.getMessage().contains("rook craft") || e.getMessage().contains("rook tube") || e.getMessage().contains("rook"))) {
+			 String[] filter = {"rooktube","rookcraft","rooktdm","RookPvPz","rook"};
+			 if (Arrays.asList(filter).contains(e.getMessage())) {
 				 e.setCancelled(true);
 				 e.getPlayer().sendMessage(ChatColor.RED + "" + ChatColor.BOLD + this.getConfig().getString("messages.chatfilter"));
 		 }
