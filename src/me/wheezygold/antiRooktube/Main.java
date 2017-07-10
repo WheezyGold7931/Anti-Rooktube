@@ -28,12 +28,14 @@ public class Main extends JavaPlugin implements Listener {
 	ConsoleCommandSender console = Bukkit.getServer().getConsoleSender();
 	
 	public void loadConfiguration() {
-		String kickpath = "messages.kick";
-		String chatfiltermessagepath = "messages.chatfilter";
-		String chatfilterpath = "toggles.chatfilter";
-		getConfig().addDefault(kickpath, "You have been removed by Anti-Rooktube!");
-		getConfig().addDefault(chatfilterpath, true);
-		getConfig().addDefault(chatfiltermessagepath, "You cannot discuss Rooktube/Rookcraft or anything related to him!");
+		String _kickpath = "messages.kick";
+		String _chatfiltermessagepath = "messages.chatfilter";
+		String _chatfilterpath = "toggles.chatfilter";
+		String _namepath = "values.rookname";
+		getConfig().addDefault(_kickpath, "You have been removed by Anti-Rooktube!");
+		getConfig().addDefault(_chatfilterpath, true);
+		getConfig().addDefault(_chatfiltermessagepath, "You cannot discuss Rooktube/Rookcraft or anything related to him!");
+		getConfig().addDefault(_namepath, "RookPvPz");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
@@ -118,7 +120,7 @@ public class Main extends JavaPlugin implements Listener {
 	 @EventHandler
 	 public void PlayerLoginEvent(PlayerJoinEvent e) {
 	        Player p = e.getPlayer();
-	        if (p.getName().equalsIgnoreCase("RookPvPz")) {
+	        if (p.getName().equalsIgnoreCase(getConfig().getString("values.rookname"))) {
 	        	p.kickPlayer("\u00A7c\u00A7l" + this.getConfig().getString("messages.kick"));
 	        	Util.sendCMsg("Rooktube (RookPvPz) has attempted to join the server but we kicked him for you.");
 	        	//We shall not let them toggle this! Who needs him in your server?
