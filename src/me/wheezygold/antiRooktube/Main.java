@@ -2,7 +2,6 @@ package me.wheezygold.antiRooktube;
 
 import java.io.IOException;
 import java.util.Arrays;
-
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.command.Command;
@@ -33,10 +32,14 @@ public class Main extends JavaPlugin implements Listener {
 		String _chatfiltermessagepath = "messages.chatfilter";
 		String _chatfilterpath = "toggles.chatfilter";
 		String _namepath = "values.rookname";
+		String _useuuidpath = "toggles.useuuid";
+		String _uuidpath = "values.uuid";
 		getConfig().addDefault(_kickpath, "You have been removed by Anti-Rooktube!");
 		getConfig().addDefault(_chatfilterpath, true);
 		getConfig().addDefault(_chatfiltermessagepath, "You cannot discuss Rooktube/Rookcraft or anything related to him!");
 		getConfig().addDefault(_namepath, "RookPvPz");
+		getConfig().addDefault(_useuuidpath, true);
+		getConfig().addDefault(_uuidpath, "fa5cc605-36ec-4612-8f79-b0550ad206ce");
 		getConfig().options().copyDefaults(true);
 		saveConfig();
 	}
@@ -55,6 +58,18 @@ public class Main extends JavaPlugin implements Listener {
             @Override
             public String getValue() {
                 return chatfilter;
+            }
+        });
+		metrics.addCustomChart(new Metrics.SimplePie("kick_method") {
+            @Override
+            public String getValue() {
+            	String kickmethod;
+            	if (getConfig().getBoolean("toggles.useuuid") == true) {
+        			kickmethod = "UUID";
+        		} else {
+        			kickmethod = "Username";
+        		}
+				return kickmethod;
             }
         });
 		Util.sendCMsg("Loaded Metrics!");
@@ -118,16 +133,22 @@ public class Main extends JavaPlugin implements Listener {
 	        }
 	        return false;
 	    }
-	 @EventHandler
+	@EventHandler
 	 public void PlayerLoginEvent(PlayerJoinEvent e) {
-	        Player p = e.getPlayer();
-	        if (p.getName().equalsIgnoreCase(getConfig().getString("values.rookname"))) {
-	        	p.kickPlayer("\u00A7c\u00A7l" + this.getConfig().getString("messages.kick"));
-	        	Util.sendCMsg("Rooktube (RookPvPz) has attempted to join the server but we kicked him for you.");
-	        	//We shall not let them toggle this! Who needs him in your server?
-	        	//If you want this toggleable contact me
-	        }
-	    }
+		 Player p = e.getPlayer();
+		 if (getConfig().getBoolean("toggles.useuuid") == true) {
+		 	if (getConfig().getString("values.uuid").equals(p.getUniqueId().toString())) {
+ 				p.kickPlayer("\u00A7c\u00A7l" + this.getConfig().getString("messages.kick"));
+ 				Util.sendCMsg("Rooktube has attempted to join the server but we kicked him for you.");
+		 		}
+		 } else {
+			 if (p.getName().equalsIgnoreCase(getConfig().getString("values.rookname"))) {
+				 p.kickPlayer("\u00A7c\u00A7l" + this.getConfig().getString("messages.kick"));
+				 Util.sendCMsg("Rooktube has attempted to join the server but we kicked him for you.");	
+			 }
+			 //I could probably make this look better but who cares.
+		 }
+	 }
 	 @EventHandler
 	 public void playerChat(AsyncPlayerChatEvent  e) {
 		 if (getConfig().getBoolean("toggles.chatfilter") != false) {
